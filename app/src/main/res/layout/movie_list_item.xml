@@ -7,7 +7,8 @@
     app:cardElevation="10dp"
     app:cardUseCompatPadding="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:context=".ui.popular_movie.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,7 +34,7 @@
             app:layout_constraintTop_toBottomOf="@+id/posterImageView"
             android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="50dp"
             android:textColor="@color/black"
             android:singleLine="true"
             android:fontFamily="@font/montserrat_bold"
@@ -50,12 +51,22 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="5dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="40dp"
             android:singleLine="true"
             android:fontFamily="@font/montserrat_regular"
             android:textSize="12sp"
             android:textStyle="bold"
             />
+
+        <ImageView
+            android:id="@+id/btn_favorite_item"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/favorite_border_red_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/posterImageView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

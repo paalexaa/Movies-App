@@ -1,10 +1,10 @@
 package com.example.moviecatalog.ui.movieDetails
 
-import android.content.pm.ActivityInfo
-import android.content.res.Configuration
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,9 +14,13 @@ import com.example.moviecatalog.R
 import com.example.moviecatalog.data.api.MovieDBClient
 import com.example.moviecatalog.data.api.MovieDBInterface
 import com.example.moviecatalog.data.api.POSTER_BASE_URL
+import com.example.moviecatalog.data.db.AppDatabase
 import com.example.moviecatalog.data.repository.NetworkState
 import com.example.moviecatalog.data.vo.MovieDetails
 import com.example.moviecatalog.databinding.ActivitySingleMovieBinding
+import com.example.moviecatalog.room.FavoriteMovie
+import com.example.moviecatalog.ui.favorite_movies.FavoriteMovieViewModel
+import com.example.moviecatalog.ui.favorite_movies.FavoriteViewModelFactory
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -25,6 +29,12 @@ class SingleMovie : AppCompatActivity() {
     private lateinit var viewModel: MovieViewModel
     private lateinit var movieRepository: MovieDetailsRepository
     private lateinit var binding: ActivitySingleMovieBinding
+
+    private val favoriteViewModel: FavoriteMovieViewModel by viewModels {
+        FavoriteViewModelFactory(AppDatabase.getDatabase(applicationContext))
+    }
+
+    private var isFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +58,33 @@ class SingleMovie : AppCompatActivity() {
             binding.progressBar.visibility = if (it == NetworkState.LOADING) View.VISIBLE else View.GONE
             binding.txtError.visibility = if (it == NetworkState.ERROR) View.VISIBLE else View.GONE
         })
+
+
+        favoriteViewModel.isFavorite(movieId).observe(this) { count ->
+            isFavorite = count > 0
+            updateFavoriteIcon()
+        }
+
+        binding.btnFavorite.setOnClickListener {
+            if (isFavorite) {
+                favoriteViewModel.removeFavorite(movieId)
+            } else {
+                val movie = FavoriteMovie(
+                    id = movieId,
+                    posterPath = "",
+                    releaseDate = "",
+                    title = ""
+                )
+                favoriteViewModel.addFavorite(movie)
+            }
+            isFavorite = !isFavorite
+            updateFavoriteIcon()
+
+            val resultIntent = Intent()
+            resultIntent.putExtra("movieId", movieId)
+            resultIntent.putExtra("isFavorite", isFavorite)
+            setResult(RESULT_OK, resultIntent)
+        }
     }
 
     private fun bindUI(it: MovieDetails) {
@@ -62,7 +99,6 @@ class SingleMovie : AppCompatActivity() {
         val formatCurrency: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
         binding.movieBudget.text = formatCurrency.format(it.budget)
 
-        // Set movie posters
         val PosterURL: String = POSTER_BASE_URL + it.posterPath
         Glide.with(this)
             .load(PosterURL)
@@ -75,7 +111,6 @@ class SingleMovie : AppCompatActivity() {
 
     }
 
-
     private fun getViewModel(movieId: Int): MovieViewModel {
 
         return ViewModelProviders.of(this, object : ViewModelProvider. Factory {
@@ -84,5 +119,13 @@ class SingleMovie : AppCompatActivity() {
                 return MovieViewModel(movieRepository, movieId) as T
             }
         })[MovieViewModel::class.java]
+    }
+
+    private fun updateFavoriteIcon() {
+        if (isFavorite) {
+            binding.btnFavorite.setImageResource(R.drawable.favorite_red_24)
+        } else {
+            binding.btnFavorite.setImageResource(R.drawable.favorite_border_red_24)
+        }
     }
 }
