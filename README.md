@@ -12,4 +12,4 @@ A sleek and responsive web application to browse, search, and explore movies. Bu
 
 ## Demo
 
-[[Live Demo](https://your-live-demo-link.netlify.app) *(Replace with your actual live demo URL)*](https://github.com/user-attachments/assets/f2ab8dfd-8e18-4e07-bab9-0c65e03ad8f4)
+https://github.com/user-attachments/assets/f2ab8dfd-8e18-4e07-bab9-0c65e03ad8f4
