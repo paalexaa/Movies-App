@@ -1,6 +1,15 @@
-**Movie Catalog** is an Android app that displays a list of popular movies using the TMDb API. It features:
+# Movies-App
 
-- **Movie List Screen**: Shows a scrollable list of movies with titles, images, release date and a favorite icon. Users can mark movies as favorites, and their choices are saved locally.
-- **Movie Detail Screen**: Provides more information about a selected movie.
+A sleek and responsive web application to browse, search, and explore movies. Built with modern web technologies to provide an intuitive user experience.
 
-https://github.com/user-attachments/assets/f2ab8dfd-8e18-4e07-bab9-0c65e03ad8f4
+## Features
+
+- Browse popular and trending movies
+- Search movies by title
+- View detailed information about each movie (overview, rating, release date, etc.)
+- Responsive design for mobile and desktop
+- Clean and user-friendly interface
+
+## Demo
+
+[[Live Demo](https://your-live-demo-link.netlify.app) *(Replace with your actual live demo URL)*](https://github.com/user-attachments/assets/f2ab8dfd-8e18-4e07-bab9-0c65e03ad8f4)
